@@ -33,7 +33,7 @@ RUN /home/web/post-setup.sh
 RUN apt-get -y purge build-essential
 RUN apt-get -y autoremove
 EXPOSE 8082:80
-USER web
+#USER web
 # Run manually
 #RUN uwsgi -s /tmp/uwsgi.sock -w users:APP -H /home/web/user_map/venv --chmod-socket=666
 # Run via supervisord

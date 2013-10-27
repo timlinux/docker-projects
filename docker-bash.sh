@@ -1,1 +1,1 @@
-docker run -t -i linfiniti/user_map:base /bin/bash
+docker run -i -t linfiniti/user_map:base /bin/bash 
