@@ -23,6 +23,5 @@ EXPOSE 5432 22
 
 ADD start.sh /start.sh
 RUN chmod 0755 /start.sh
-ADD sshd.conf /etc/supervisor/conf.d/sshd.conf
 
 CMD ["/start.sh"]

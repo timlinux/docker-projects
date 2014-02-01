@@ -1,1 +1,1 @@
-docker build -t qgis/postgis:2.1-3 .
+docker build -t timlinux/postgis:2.1-4 .
