@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 # Commit and redeploy the user map container
 # 
 if [ $# -ne 1 ]; then
@@ -12,14 +12,28 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 VERSION=$1
+HOST_DATA_DIR=/var/docker-data/postgres-dat
+PGUSER=qgis
+PGPASS=qgis
+
 IDFILE=/home/timlinux/postgis-current-container.id
 ID=`cat $IDFILE`
-docker commit $ID timlinux/postgis:$VERSION -run='{"Cmd": ["/start.sh"], "PortSpecs": ["80"], "Hostname": "postgis"}' -author="Tim Sutton <tim@linfiniti.com>"
+docker commit $ID qgis/postgis:$VERSION -run='{"Cmd": ["/start.sh"], "PortSpecs": ["5432"], "Hostname": "postgis"}' -author="Tim Sutton <tim@linfiniti.com>"
 docker kill $ID
+docker rm $ID
 rm $IDFILE
-docker run -cidfile="$IDFILE" -d -p 8099:80 -p 2099:22 -t timlinux/postgis:$VERSION supervisord -n
-docker run -cidfile="$IDFILE" -name="postgis" -d -v /var/docker-data/postgres-data:/var/lib/postgresql -t timlinux/postgis:$VERSION
+if [ ! -d $HOST_DATA_DIR ]
+then
+    mkdir $HOST_DATA_DIR
+fi
+CMD="docker run -cidfile="$IDFILE" -name="postgis" -e USERNAME=$PGUSER -e PASS=$PGPASS -d -v $HOST_DATA_DIR:/var/lib/postgresql -t qgis/postgis:$VERSION /start.sh"
+echo 'Running:'
+echo $CMD
+eval $CMD
 NEWID=`cat $IDFILE`
 echo "Postgis has been committed as $1 and redeployed as $NEWID"
 docker ps -a | grep $NEWID
-
+echo "If thhere was no pre-existing database, you can access this using"
+IPADDRESS=`docker inspect postgis | grep IPAddress | grep -o '[0-9\.]*'`
+echo "psql -l -p 5432 -h $IPADDRESS -U $PGUSER"
+echo "and password $PGPASS"
