@@ -64,12 +64,21 @@ Starting the committed instance::
         -name="tilemill" \
         -p 2222:22 \
         -v /home/gisdata:/home/gisdata \
+        -v /home/timlinux/Documents/MapBox:/Documents/MapBox \
         linfiniti/tilemill \
         -n supervisord
 
+Under this scenario, we share our gisdata directory from /home/gisdata to
+a similarly named directory in the docker container. We also share our
+MapBox directory to /Documents/MapBox which is where the docker installed
+tilemill will look for and store its docs.
+
 Connecting to the running instance with ssh port forwarding::
 
-    
+ssh localhost -p2222 -l root -L 20009:localhost:20009 -L 20008:localhost:20008
+
+
+Now open your browser at: http://localhost:20009
 
 Killing the running instance::
 
