@@ -11,6 +11,10 @@ if [ ! -d $DATADIR ]; then
   mkdir -p $DATADIR
 fi
 
+# Note that $USERNAME and $PASS below are passed via docker run e.g.
+#docker run -cidfile=/home/timlinux/postgis-current-container.id -name=postgis -e USERNAME=qgis -e PASS=qgis -d -v /var/docker-data/postgres-dat:/var/lib/postgresql -t qgis/postgis:6 /start.sh
+
+
 # test if DATADIR has content
 if [ ! "$(ls -A $DATADIR)" ]; then
   echo "Initializing Postgres Database at $DATADIR"
