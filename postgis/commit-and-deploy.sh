@@ -1,6 +1,6 @@
 #!/bin/bash
 # Commit and redeploy the user map container
-# 
+#
 if [ $# -ne 1 ]; then
     echo "Commit and then redeploy the user_map container."
     echo "Usage:"
@@ -12,7 +12,7 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 VERSION=$1
-HOST_DATA_DIR=/var/docker-data/postgres-dat
+HOST_DATA_DIR=/var/docker-data/postgres-data
 PGUSER=qgis
 PGPASS=qgis
 
