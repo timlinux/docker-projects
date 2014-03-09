@@ -16,9 +16,8 @@ Setup docker and run a docker instance::
 Setup docker instance to run ssh::
 
     apt-get update
-    apt-get install openssh-server
+    apt-get install -y openssh-server supervisord
     mkdir /var/run/sshd
-    apt-get install supervisord
     echo "[program:sshd]" > /etc/supervisor/conf.d/sshd.conf
     echo "user=root" >> /etc/supervisor/conf.d/sshd.conf
     echo "command=/usr/sbin/sshd -D" >> /etc/supervisor/conf.d/sshd.conf
@@ -66,7 +65,7 @@ Starting the committed instance::
         -v /home/gisdata:/home/gisdata \
         -v /home/timlinux/Documents/MapBox:/Documents/MapBox \
         linfiniti/tilemill \
-        -n supervisord
+        supervisord -n
 
 Under this scenario, we share our gisdata directory from /home/gisdata to
 a similarly named directory in the docker container. We also share our
