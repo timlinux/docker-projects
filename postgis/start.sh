@@ -31,14 +31,23 @@ su postgres sh -c "$POSTGRES -D $DATADIR -c config_file=$CONF" &
 
 sleep 10
 
-# Note the dockerfile must have put the postgis.sql and spatialrefsys.sql scripts into /root/
-su postgres sh -c "createdb template_postgis"
-su postgres sh -c "psql template1 -c 'UPDATE pg_database SET datistemplate = TRUE WHERE datname = \'template_postgis\';'"
-su postgres sh -c "psql template_postgis -f /tmp/postgis.sql"
-su postgres sh -c "psql template_postgis -f /tmp/spatial_ref_sys.sql"
-su postgres sh -c "psql template_postgis -c 'GRANT ALL ON geometry_columns TO PUBLIC;'"
-su postgres sh -c "psql template_postgis -c 'GRANT ALL ON geography_columns TO PUBLIC;'"
-su postgres sh -c "psql template_postgis -c 'GRANT ALL ON spatial_ref_sys TO PUBLIC;'"
-
+RESULT=`su postgres sh -c "psql -l" | grep postgis | wc -l`
+if [[ $RESULT == '1' ]]
+then
+    echo 'Postgis Already There'
+else
+    echo "Postgis is missing, installing now"
+    # Note the dockerfile must have put the postgis.sql and spatialrefsys.sql scripts into /root/
+    # We use template0 since we want t different encoding to template1
+    su postgres sh -c "createdb template_postgis -E UTF8 -T template0"
+    su postgres sh -c "psql template0 -c 'UPDATE pg_database SET datistemplate = TRUE WHERE datname = \'template_postgis\';'"
+    su postgres sh -c "psql template_postgis -f /tmp/postgis.sql"
+    su postgres sh -c "psql template_postgis -f /tmp/spatial_ref_sys.sql"
+    su postgres sh -c "psql template_postgis -c 'GRANT ALL ON geometry_columns TO PUBLIC;'"
+    su postgres sh -c "psql template_postgis -c 'GRANT ALL ON geography_columns TO PUBLIC;'"
+    su postgres sh -c "psql template_postgis -c 'GRANT ALL ON spatial_ref_sys TO PUBLIC;'"
+    # This should show up in docker logs afterwards
+fi
+su postgres sh -c "psql -l"
 
 wait $!
