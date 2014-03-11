@@ -17,9 +17,15 @@ RUN service postgresql start && /bin/su postgres -c "createuser -d -s -r -l dock
 RUN echo "listen_addresses = '*'" >> /etc/postgresql/9.3/main/postgresql.conf
 RUN echo "port = 5432" >> /etc/postgresql/9.3/main/postgresql.conf
 
-EXPOSE 5432
+# Dont expose the port if you intend to use the -link option to connect to this from another container
+# See http://docs.docker.io/en/latest/use/working_with_links_names/ (its not very well highlighted there)
+#EXPOSE 5432
 
 ADD start.sh /start.sh
 RUN chmod 0755 /start.sh
+ADD postgis.sql /tmp/postgis.sql
+RUN chmod a+r /tmp/postgis.sql
+ADD spatial_ref_sys.sql /tmp/spatial_ref_sys.sql
+RUN chmod a+r /tmp/spatial_ref_sys.sql
 
 CMD ["/start.sh"]

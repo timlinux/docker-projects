@@ -27,4 +27,14 @@ trap "echo \"Sending SIGTERM to postgres\"; killall -s SIGTERM postgres" SIGTERM
 
 su postgres sh -c "$POSTGRES -D $DATADIR -c config_file=$CONF" &
 
+# Note the dockerfile must have put the postgis.sql and spatialrefsys.sql scripts into /root/
+su postgres sh -c "createdb template_postgis"
+su postgres sh -c "psql template1 -c 'UPDATE pg_database SET datistemplate = TRUE WHERE datname = \'template_postgis\';'"
+su postgres sh -c "psql template_postgis -f /root/postgis.sql"
+su postgres sh -c "psql template_postgis -f /root/spatial_ref_sys.sql"
+su postgres sh -c "psql template1 -c 'GRANT ALL ON geometry_columns TO PUBLIC;'"
+su postgres sh -c "psql template1 -c 'GRANT ALL ON geography_columns TO PUBLIC;'"
+su postgres sh -c "psql template1 -c 'GRANT ALL ON spatial_ref_sys TO PUBLIC;'"
+
+
 wait $!
