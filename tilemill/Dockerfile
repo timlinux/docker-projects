@@ -19,7 +19,7 @@ ADD sshd.conf /etc/supervisor/conf.d/sshd.conf
 RUN apt-get install -y python-software-properties
 RUN add-apt-repository ppa:developmentseed/mapbox
 RUN apt-get update
-RUN apt-get install -y tilemill
+RUN apt-get install -y tilemill socat
 
 ADD tilemill.conf /etc/supervisor/conf.d/tilemill.conf
 # socat is used to proxy linked container's 5432 to 
