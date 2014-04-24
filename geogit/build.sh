@@ -1,1 +1,1 @@
-docker build -t kartoza/geogit:1.0 .
+docker.io build -t kartoza/geogit:1.0 .

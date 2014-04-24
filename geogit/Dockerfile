@@ -9,7 +9,7 @@ RUN  dpkg-divert --local --rename --add /sbin/initctl
 
 # Use local cached debs from host (saves your bandwidth!)
 # Change ip below to that of your apt-cacher-ng host
-RUN echo 'Acquire::http { Proxy "http://192.168.1.13:3142"; };' > /etc/apt/apt.conf.d/71-apt-cacher-ng
+ADD 71-apt-cacher-ng /etc/apt/apt.conf.d/71-apt-cacher-ng
 
 RUN echo "deb http://archive.ubuntu.com/ubuntu trusty main universe" > /etc/apt/sources.list
 RUN apt-get -y update
@@ -21,8 +21,9 @@ ADD sshd.conf /etc/supervisor/conf.d/sshd.conf
 
 #-------------Application Specific Stuff ----------------------------------------------------
 
-
-RUN apt-get install -y maven default-jdk git
+# Next line a workaround for https://github.com/dotcloud/docker/issues/963
+RUN apt-get install -y --no-install-recommends openjdk-7-jdk
+RUN apt-get install -y maven git
 ADD geogit.conf /etc/supervisor/conf.d/geogit.conf
 
 
