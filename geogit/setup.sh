@@ -4,7 +4,7 @@
 cd /
 git clone http://github.com/boundlessgeo/GeoGit.git
 cd GeoGit/src/parent
-mvn clean install -DskupTests
+mvn clean install -DskipTests
 
 # Make an empty repo
 export PATH=/GeoGit/src/cli-app/target/geogit/bin
