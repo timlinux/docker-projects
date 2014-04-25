@@ -19,6 +19,7 @@ RUN mkdir /var/run/sshd
 ADD sshd.conf /etc/supervisor/conf.d/sshd.conf
 
 
+RUN echo 'root:geogit' | chpasswd
 #-------------Application Specific Stuff ----------------------------------------------------
 
 # Next line a workaround for https://github.com/dotcloud/docker/issues/963
@@ -27,7 +28,6 @@ RUN apt-get install -y maven git
 ADD geogit.conf /etc/supervisor/conf.d/geogit.conf
 
 
-RUN echo 'root:geogit' | chpasswd
 
 EXPOSE 22
 EXPOSE 8080
