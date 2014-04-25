@@ -12,13 +12,13 @@ Run as daemon (more typical):
 sudo docker.io run --name "postgis" -p 2222:22 -p 25432:5432 -d -t kartoza/postgis:2.1 /start.sh
 ```
 
-## Info
+Connect with psql:
 
-This Dockerfile creates a container running PostGIS 2.1 in PostgreSQL 9.3
 
-- expose port `5432`
-- initializes a database in `/var/lib/postgresql/9.3/main`
-- superuser in the database: `docker/docker`
+psql -h localhost -U docker -p 25432 -l
+
+
+
 
 
 ## Persistance
