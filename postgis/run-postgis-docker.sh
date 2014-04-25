@@ -1,13 +1,19 @@
 #!/bin/bash
 # Commit and redeploy the user map container
+
+# Note this script hosts the postgis cluster on the host filesystem
+# If you want to use the container with the cluster embedded
+# In the container, run it like this:
+
+
 #
 if [ $# -ne 1 ]; then
     echo "Deploy the postgis container."
     echo "Usage:"
     echo "$0 <version>"
     echo "e.g.:"
-    echo "$0 1.6"
-    echo "Will run the container using tag version 1.6"
+    echo "$0 2.1"
+    echo "Will run the container using tag version 2.1"
     echo "Once it is running see the commit-and-deploy.sh script if you"
     echo "wish to save new snapshots."
     exit 1
