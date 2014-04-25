@@ -7,7 +7,7 @@ cd GeoGit/src/parent
 mvn clean install -DskipTests
 
 # Make an empty repo
-export PATH=/GeoGit/src/cli-app/target/geogit/bin
+export PATH=/GeoGit/src/cli-app/target/geogit/bin:$PATH
 mkdir GeoGitRepo
 cd GeoGitRepo
 geogit init
