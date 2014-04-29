@@ -44,6 +44,8 @@ else
     su postgres sh -c "psql template0 -c 'UPDATE pg_database SET datistemplate = TRUE WHERE datname = \'template_postgis\';'"
     su postgres sh -c "psql template_postgis -f $SQLDIR/postgis.sql"
     su postgres sh -c "psql template_postgis -f $SQLDIR/spatial_ref_sys.sql"
+    su postgres sh -c "psql template_postgis -f $SQLDIR/rtpostgis.sql"
+    su postgres sh -c "psql template_postgis -f $SQLDIR/topology.sql"
     # Needed when importing old dumps using e.g ndims for constraints
     su postgres sh -c "psql template_postgis -f $SQLDIR/legacy_minimal.sql"
     su postgres sh -c "psql template_postgis -c 'GRANT ALL ON geometry_columns TO PUBLIC;'"
